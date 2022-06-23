@@ -8,7 +8,6 @@ using Random = UnityEngine.Random;
 
 public class GatheredItem : MonoBehaviour
 {
-    //TODO: Add pooling
     //TODO: Try bezier curves
     [Header("Item jump parameters")] [SerializeField]
     private Vector3 offset = new Vector3(0, 1, 0);
@@ -22,7 +21,7 @@ public class GatheredItem : MonoBehaviour
 
     private void Start()
     {
-        jumpToTarget = GameManager.Instance.gatherTargetPoint;
+        jumpToTarget = GameManager.Instance.playerGatherTargetPoint;
         AnimateResources();
     }
 

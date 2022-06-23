@@ -144,6 +144,14 @@ namespace StarterAssets
 		{
 			if (raycaster.Sphere(out GameObject hitObject))
 			{
+				if (hitObject.TryGetComponent(out Resource res))
+				{
+					if (res.GetHealth() == 0)
+					{
+						animator.SetBool(_animIDAttack, false);
+						return;
+					}
+				}
 				if (_hasAnimator)
 				{
 					animator.SetBool(_animIDAttack, true);

@@ -39,5 +39,6 @@ public class Item : SerializedScriptableObject
     public void DecreaseCount(int count)
     {
         this.count -= count;
+        OnItemChange?.Invoke();
     }
 }
