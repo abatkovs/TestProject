@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public Inventory inventory;
     public Gear gear;
-    public Transform gatherTargetPoint;
+    public Transform playerGatherTargetPoint;
     
     private void Awake()
     {

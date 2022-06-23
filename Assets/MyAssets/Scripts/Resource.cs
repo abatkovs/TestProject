@@ -14,14 +14,22 @@ public class Resource : Interactable
     [SerializeField] private Item item;
     [SerializeField] private GameObject resourcePrefab;
     [SerializeField] private int tier = 1;
-    [SerializeField] private int health = 10;
+    [SerializeField] private int maxHealth = 10;
+    private int _health = 10;
+    public int GetHealth() => _health;
+    [SerializeField] private float resetTime = 60f;
+
+    [SerializeField] private GameObject resourceGrown;
+    [SerializeField] private GameObject resourceDamaged;
+    [SerializeField] private GameObject resourceDepleted;
 
     [Header("Popup")] 
     [SerializeField] private PopUpInfo popUpPf;
     [SerializeField] private string popUpAffix; //PH replace with image
-    
 
-    [Header("Shake parameters")] 
+
+    [Header("Animation parameters")] 
+    [SerializeField] private GameObject animationTarget;
     [SerializeField] private float shakeDuration = 0.25f;
     [SerializeField] private Vector3 shakeStrength = new Vector3(0.1f, 0.3f, 0.1f);
 
@@ -35,6 +43,7 @@ public class Resource : Interactable
     
     private void Start()
     {
+        _health = maxHealth;
         interactionTimer = interactionTimerInterval;
         _gameManager = GameManager.Instance;
     }
@@ -46,18 +55,26 @@ public class Resource : Interactable
 
     public override void Interact()
     {
-        if (interactionTimer > 0) return;
-        interactionTimer = interactionTimerInterval; 
+        if (interactionTimer > 0 || _health <= 0) return;
+        
+        
         _playerToolTier = GetPlayerToolTier();
         if (_playerToolTier < tier) return;
+        interactionTimer = interactionTimerInterval;
+        
         Animate();
         SpawnPopUp();
+        
         for (int i = 0; i < _playerToolTier; i++)
         {
             SpawnResource();
         }
     }
-
+    
+    /// <summary>
+    /// Get required resource tool tier
+    /// </summary>
+    /// <returns></returns>
     private int GetPlayerToolTier()
     {
         switch (type)
@@ -76,8 +93,8 @@ public class Resource : Interactable
     /// </summary>
     private void Animate()
     {
-        transform.DORewind();
-        transform.DOShakeScale(shakeDuration, shakeStrength);
+        animationTarget.transform.DORewind();
+        animationTarget.transform.DOShakeScale(shakeDuration, shakeStrength);
     }
 
     public void TakeDamage()
@@ -85,11 +102,44 @@ public class Resource : Interactable
         
     }
     
-    private GameObject SpawnResource()
+    private void SpawnResource()
     {
+        if (_health <= 0) return;
+        if (_health == maxHealth) StartCoroutine($"ResetHealth");
+        _health--;
+        UpdateVisuals();
         _gameManager.inventory.AddItem(item);
         var resource = Instantiate(resourcePrefab, spawnPoint.position, Quaternion.identity);
-        return resource;
+        //TODO: Add pooling
+    }
+
+    private void UpdateVisuals()
+    {
+        HideVisuals();
+        if (_health <= 0)
+        {
+            resourceDepleted.SetActive(true);
+            return;
+        }
+        if (_health > maxHealth / 2) resourceGrown.SetActive(true);
+        if(_health <= maxHealth / 2) resourceDamaged.SetActive(true);
+        
+    }
+
+    private void HideVisuals()
+    {
+        resourceGrown.SetActive(false);
+        resourceDamaged.SetActive(false);
+        resourceDepleted.SetActive(false);
+    }
+
+    private IEnumerator ResetHealth()
+    {
+        Debug.Log("Reseting health");
+        yield return new WaitForSeconds(resetTime);
+        Debug.Log("Reset done");
+        _health = maxHealth;
+        UpdateVisuals();
     }
 
     private void SpawnPopUp()
@@ -97,4 +147,7 @@ public class Resource : Interactable
         PopUpInfo popUp = Instantiate(popUpPf, spawnPoint.position, quaternion.identity);
         popUp.displayInfo = $"+{_playerToolTier} {popUpAffix}";
     }
+
+    
+
 }

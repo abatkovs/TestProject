@@ -6,8 +6,7 @@ public class EnemyIdleState : EnemyBaseState
 {
     private const float IdleSpeed = 0;
     private const float AnimatorDampTime = 0.1f;
-    private const float AnimatorDefaultSpeed = 1;
-    
+
     public EnemyIdleState(EnemyStateMachine stateMachine) : base(stateMachine)
     {
     }
@@ -15,7 +14,7 @@ public class EnemyIdleState : EnemyBaseState
     public override void Enter()
     {
         StateMachine.currentStateStr = "IdleState";
-        StateMachine.Animator.SetFloat(StateMachine.AnimatorMotionSpeed, AnimatorDefaultSpeed);
+        StateMachine.Animator.SetFloat(StateMachine.AnimatorMotionSpeed, StateMachine.AnimatorDefaultSpeed);
         StateMachine.Animator.SetFloat(StateMachine.AnimatorSpeed, IdleSpeed);
     }
 
@@ -25,6 +24,7 @@ public class EnemyIdleState : EnemyBaseState
         if (IsInChaseRange())
         {
             Debug.Log("Chase player");
+            StateMachine.SwitchState(new EnemyChaseState(StateMachine));
             return;
         }
     }

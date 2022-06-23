@@ -15,7 +15,7 @@ public abstract class EnemyBaseState : State
     
     public override void Tick(float deltaTime)
     {
-        StateMachine.controller.SimpleMove(Vector3.zero);
+        StateMachine.Controller.SimpleMove(Vector3.zero);
         //if (StateMachine.controller.isGrounded) return;
         // StateMachine.controller.Move(Vector3.down * _verticalVelocity);
         // if (_verticalVelocity > _terminalVelocity) return;
@@ -29,12 +29,12 @@ public abstract class EnemyBaseState : State
 
     protected void Move(Vector3 motion, float deltaTime)
     {
-        StateMachine.controller.Move((motion + StateMachine.forceReceiver.Movement) * deltaTime);
+        StateMachine.Controller.Move((motion + StateMachine.forceReceiver.Movement) * deltaTime);
     }
 
     protected bool IsInChaseRange()
     {
-        var playerDistanceSqr = (StateMachine.player.transform.position - StateMachine.transform.position).sqrMagnitude;
+        var playerDistanceSqr = (StateMachine.Player.transform.position - StateMachine.transform.position).sqrMagnitude;
         return playerDistanceSqr <= StateMachine.playerDetectionRange * StateMachine.playerDetectionRange;
     }
     
