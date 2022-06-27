@@ -25,6 +25,8 @@ public class UnlockableArea : MonoBehaviour
     private void Start()
     {
         if (isUnlocked) return;
+        
+        HidePreview();
         islandCollider.enabled = false;
     }
 
@@ -54,15 +56,45 @@ public class UnlockableArea : MonoBehaviour
 
     private void SpawnIslandObjects()
     {
-        islandCollider.enabled = true;
         foreach (var resource in islandResources)
         {
+            resource.SetActive(true);
             SpawnResource(resource);
         }
 
         foreach (var unlocker in unlockers)
         {
+            unlocker.transform.gameObject.SetActive(true);
             EnableUnlocker(unlocker);
+        }
+        islandCollider.enabled = true;
+    }
+
+    private void HideIslandResources()
+    {
+        foreach (var resource in islandResources)
+        {
+            resource.SetActive(false);
+        }
+
+        foreach (var unlocker in unlockers)
+        {
+            unlocker.transform.gameObject.SetActive(false);
+        }
+    }
+
+    private void ShowAndScaleResources()
+    {
+        foreach (var resource in islandResources)
+        {
+            resource.SetActive(true);
+            resource.transform.localScale = resourceSize;
+        }
+
+        foreach (var unlocker in unlockers)
+        {
+            unlocker.transform.gameObject.SetActive(true);
+            unlocker.transform.localScale = resourceSize;
         }
     }
 
@@ -77,5 +109,25 @@ public class UnlockableArea : MonoBehaviour
         unlocker.transform.gameObject.SetActive(true);
         // var tween = unlocker.transform.DOScale(resourceSize, targetScaleTime);
         // tween.OnComplete(() => ShakeResources(unlocker.transform));
+    }
+    
+    /// <summary>
+    /// Preview unlocked island
+    /// </summary>
+    [ContextMenu("Show preview")]
+    private void UnlockPreview()
+    {
+        transform.localScale = targetScale;
+        ShowAndScaleResources();
+    }
+    /// <summary>
+    /// Reset preview
+    /// </summary>
+    [ContextMenu("Hide Preview")]
+    private void HidePreview()
+    {
+        HideIslandResources();
+        var localScale = transform.localScale;
+        transform.localScale = new Vector3(localScale.x, 1, localScale.z);
     }
 }

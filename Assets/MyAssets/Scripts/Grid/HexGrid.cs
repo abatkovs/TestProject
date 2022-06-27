@@ -44,8 +44,7 @@ public class HexGrid : MonoBehaviour
     {
         foreach (var cell in _cells)
         {
-            Destroy(cell.gameObject);
-            
+            DestroyImmediate(cell.gameObject);
         }
         Array.Clear(_cells,0,_cells.Length);
     }

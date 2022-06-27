@@ -8,23 +8,31 @@ using UnityEngine.UI;
 [CreateAssetMenu(fileName = "Item", menuName = "Data/Item", order = 0)]
 public class Item : SerializedScriptableObject
 {
-    [SerializeField] private Image icon;
+    [SerializeField] private Sprite icon;
     [SerializeField] private int count;
     [SerializeField] private ResourceType resourceType;
     
     public event Action OnItemChange;
     
     public int GetCount() => count;
+    public Sprite GetTexture() => icon;
+    
     public void DecreaseCount()
     {
-        OnItemChange?.Invoke();
         count--;
+        OnItemChange?.Invoke();
+    }
+
+    public void DecreaseCount(int itemCount)
+    {
+        count -= itemCount;
+        OnItemChange?.Invoke();
     }
 
     public void IncreaseCount()
     {
-        OnItemChange?.Invoke();
         count++;
+        OnItemChange?.Invoke();
     }
 
     public void ResetItem()
@@ -36,9 +44,5 @@ public class Item : SerializedScriptableObject
     {
     }
 
-    public void DecreaseCount(int count)
-    {
-        this.count -= count;
-        OnItemChange?.Invoke();
-    }
+
 }

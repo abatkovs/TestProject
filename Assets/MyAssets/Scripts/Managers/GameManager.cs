@@ -11,9 +11,15 @@ public class GameManager : MonoBehaviour
     public Inventory inventory;
     public Gear gear;
     public Transform playerGatherTargetPoint;
-    
+
+    [SerializeField] private int frameRate = 30;
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        Application.targetFrameRate = frameRate;
     }
 }

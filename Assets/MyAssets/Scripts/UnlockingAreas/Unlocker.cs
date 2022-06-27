@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Unlocker : SerializedMonoBehaviour
 {
@@ -13,6 +14,8 @@ public class Unlocker : SerializedMonoBehaviour
     [SerializeField] private UnlockableArea areaToUnlock;
     [SerializeField] private float payTimer = 0.1f;
     private float _curTimer;
+
+    [SerializeField] private Image resourceImg;
 
     private void Start()
     {
@@ -33,7 +36,7 @@ public class Unlocker : SerializedMonoBehaviour
             foreach (var item in unlockPrice)
             {
                 item.BuyResource();
-                remainingResourcesTxt.text = $"{item.price} W";
+                remainingResourcesTxt.text = $"{item.price}";
                 if (item.price == 0)
                 {
                     unlockPrice.Remove(item);

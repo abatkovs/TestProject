@@ -32,7 +32,7 @@ public class ScreenPointToRay : MonoBehaviour
         if (!Physics.Raycast(ray, out RaycastHit hitInfo, 100, layerMask)) return;
         if (hitInfo.transform.TryGetComponent(out Shop shop))
         {
-            shop.UpgradeAxe();
+            shop.OnInteract();
         }
         Debug.Log(hitInfo.transform.name);
         Debug.DrawRay(ray.origin, ray.direction * hitInfo.distance, Color.yellow);

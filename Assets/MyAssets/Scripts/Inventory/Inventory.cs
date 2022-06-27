@@ -35,4 +35,6 @@ public class Inventory : SerializedMonoBehaviour
         item.IncreaseCount();
         OnInventoryUpdate?.Invoke();
     }
+
+    public List<Item> GetInventoryItems() => items;
 }

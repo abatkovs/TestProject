@@ -8,7 +8,7 @@ public class UpdateUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text woodT1Txt;
     [SerializeField] private Item woodT1Item;
-
+    
     private void Start()
     {
         woodT1Item.OnItemChange += UpdateUIItemCount;
@@ -16,6 +16,6 @@ public class UpdateUI : MonoBehaviour
 
     private void UpdateUIItemCount()
     {
-        woodT1Txt.text = $"Wood T1 \n{woodT1Item.GetCount()}";
+        woodT1Txt.text = $"{woodT1Item.GetCount()}";
     }
 }
