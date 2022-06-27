@@ -172,7 +172,7 @@ MonoBehaviour:
   resourceDamaged: {fileID: 5057406200669489822}
   resourceDepleted: {fileID: 2863042812225334908}
   popUpPf: {fileID: 8696826954032245872, guid: 1364a931498197f45baa779ae84ee025, type: 3}
-  popUpAffix: W
+  popUpTexture: {fileID: 2800000, guid: e4b5577e85c96544289d4beaff204010, type: 3}
   animationTarget: {fileID: 7783661655803376083}
   shakeDuration: 0.25
   shakeStrength: {x: 0.1, y: 0.3, z: 0.1}

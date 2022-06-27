@@ -12,9 +12,4 @@ public abstract class Interactable : MonoBehaviour
     {
         Interact();
     }
-
-    public void OnCollisionEnter(Collision other)
-    {
-        Interact();
-    }
 }

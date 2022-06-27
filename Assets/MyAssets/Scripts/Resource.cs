@@ -25,7 +25,7 @@ public class Resource : Interactable
 
     [Header("Popup")] 
     [SerializeField] private PopUpInfo popUpPf;
-    [SerializeField] private string popUpAffix; //PH replace with image
+    [SerializeField] private Texture2D popUpTexture; //PH replace with image
 
 
     [Header("Animation parameters")] 
@@ -55,6 +55,7 @@ public class Resource : Interactable
 
     public override void Interact()
     {
+        //Debug.Break();
         if (interactionTimer > 0 || _health <= 0) return;
         
         
@@ -135,9 +136,8 @@ public class Resource : Interactable
 
     private IEnumerator ResetHealth()
     {
-        Debug.Log("Reseting health");
+        Debug.Log("Start reseting resource health");
         yield return new WaitForSeconds(resetTime);
-        Debug.Log("Reset done");
         _health = maxHealth;
         UpdateVisuals();
     }
@@ -145,7 +145,8 @@ public class Resource : Interactable
     private void SpawnPopUp()
     {
         PopUpInfo popUp = Instantiate(popUpPf, spawnPoint.position, quaternion.identity);
-        popUp.displayInfo = $"+{_playerToolTier} {popUpAffix}";
+        popUp.displayInfo = $"+{Mathf.Min(_playerToolTier, _health)} ";
+        popUp.popUpTexture = popUpTexture;
     }
 
     

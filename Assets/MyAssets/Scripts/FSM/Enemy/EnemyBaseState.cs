@@ -15,11 +15,13 @@ public abstract class EnemyBaseState : State
     
     public override void Tick(float deltaTime)
     {
+        if(StateMachine.timer > 0) StateMachine.timer -= deltaTime;
         StateMachine.Controller.SimpleMove(Vector3.zero);
         //if (StateMachine.controller.isGrounded) return;
         // StateMachine.controller.Move(Vector3.down * _verticalVelocity);
         // if (_verticalVelocity > _terminalVelocity) return;
         // _verticalVelocity += StateMachine.Gravity * Time.deltaTime;
+        if(StateMachine.hp <= 0) StateMachine.SwitchState(new EnemyDeadState(StateMachine));
     }
 
     protected void Move(float deltaTime)
@@ -37,5 +39,7 @@ public abstract class EnemyBaseState : State
         var playerDistanceSqr = (StateMachine.Player.transform.position - StateMachine.transform.position).sqrMagnitude;
         return playerDistanceSqr <= StateMachine.playerDetectionRange * StateMachine.playerDetectionRange;
     }
-    
+
+    protected float GetDistance() => (StateMachine.Player.transform.position - StateMachine.transform.position).sqrMagnitude;
+
 }

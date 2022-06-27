@@ -11,15 +11,17 @@ public class ForceReceiver : MonoBehaviour
 
     private Vector3 _dampingVelocity;
     private Vector3 _impact;
-    private float _verticalVelocity;
+    [SerializeField] private float _verticalVelocity;
+    [SerializeField] private bool isGrounded;
 
     public Vector3 Movement => _impact + Vector3.up * _verticalVelocity;
 
     private void Update()
     {
+        isGrounded = controller.isGrounded;
         if (_verticalVelocity < 0f && controller.isGrounded)
         {
-            _verticalVelocity = Physics.gravity.y * Time.deltaTime;
+            _verticalVelocity = 0;
         }
         else
         {

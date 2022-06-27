@@ -7,4 +7,6 @@ public enum ResourceType
     None,
     Wood,
     Stone,
+    RefinedWood,
+    Iron,
 }

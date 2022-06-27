@@ -2,17 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttackState : MonoBehaviour
+public class EnemyAttackState : EnemyBaseState
 {
-    // Start is called before the first frame update
-    void Start()
+    private float attackDistance = 2.8f;
+    public EnemyAttackState(EnemyStateMachine stateMachine) : base(stateMachine)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        StateMachine.currentStateStr = "AttackState";
+        StateMachine.Animator.SetBool(StateMachine.AnimatorAttacking, true);
+    }
+
+    public override void Tick(float deltaTime)
+    {
+        base.Tick(deltaTime);
+        if(GetDistance() > attackDistance) StateMachine.SwitchState(new EnemyChaseState(StateMachine));
+    }
+
+    public override void Exit()
+    {
+        StateMachine.Animator.SetBool(StateMachine.AnimatorAttacking, false);
     }
 }
